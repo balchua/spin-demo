@@ -1,0 +1,4 @@
+bar-http/*.wasm
+user-http/*.wasm
+.spin/
+.vscode/**

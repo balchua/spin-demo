@@ -1,0 +1,31 @@
+spin_version = "1"
+authors = ["balchua <balchua@yahoo.com>"]
+description = "A simple spin application in Go"
+name = "http-demo"
+trigger = { type = "http", base = "/" }
+version = "0.1.0"
+[variables]
+app_text = { required = true }
+user_token = { required = true }
+
+[[component]]
+id = "bar-http"
+source = "./bar-http/bar-http.wasm"
+allowed_http_hosts = []
+[component.trigger]
+route = "/bar"
+[component.config]
+app_text = "{{ app_text }}"
+[component.build]
+command = "tinygo build -target=wasi -gc=leaking -no-debug -o ./bar-http/bar-http.wasm ./bar-http/main.go"
+
+[[component]]
+id = "user-http"
+source = "./user-http/user-http.wasm"
+allowed_http_hosts = []
+[component.trigger]
+route = "/user"
+[component.config]
+user_token = "{{ user_token }}"
+[component.build]
+command = "tinygo build -target=wasi -gc=leaking -no-debug -o ./user-http/user-http.wasm ./user-http/main.go"
